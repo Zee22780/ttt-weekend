@@ -1,8 +1,15 @@
 /*-------------------------------- Constants --------------------------------*/
 const winningCombos = [
-  [0,1,2], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6], [3,4,5], [6,7,8]
+  [0,1,2], 
+  [0,3,6], 
+  [1,4,7], 
+  [2,5,8], 
+  [0,4,8], 
+  [2,4,6], 
+  [3,4,5], 
+  [6,7,8]
 ]
-
+const replayBtn = document.getElementById("#replay-button")
 
 
 /*---------------------------- Variables (state) ----------------------------*/
@@ -13,6 +20,7 @@ let board, turn, winner, playerX, playerO
 const squares = document.querySelectorAll(".square")
 console.log(squares)
 const gameStat = null
+const message = document.getElementById("#message")
 
 /*----------------------------- Event Listeners -----------------------------*/
 squares.forEach(square => square.addEventListener("click", handleClick))
@@ -31,30 +39,48 @@ function init() {
   playerX = 1
   playerO = -1 
   winner = null
-
+  
 }
 
 function handleClick(evt) {
   const index = evt.target.id.replace('sq', '')
   board[index] = turn
   console.log(board)
+
+render()
+getWinner()
+}
+
+function render() {
+// 3.3.1) Loop over the board array (which represents the squares on the page), and for each iteration: 3.3.1.1) Use the index of the iteration to access the square in the squares array that corresponds with the current cell being iterated over in the board array 3.3.1.2) Style that square however you wish dependant on the value contained in the current cell being iterated over (-1, 1, or null)
+
+board.forEach(function (square, i){
+  if(board[i]=== 1){
+    squares[i].textContent = "X"
+  } else if (board[i] === -1){
+    squares[i].textContent = "O"
+  } else if (board[i] === null) {
+    squares[i].textContent === ""
+  }
+  turn = turn * -1
+  })
+// getWinner()
 }
 
 
-// render() 
+function getWinner() {
+  for (let i = 0; i< winningCombos.length; i++){
+    console.log("hello")
+    const a = winningCombos[i][0]
+    const b = winningCombos[i][1]
+    const c = winningCombos[i][2]
 
-// 3.3.1) Loop over the board array (which represents the squares on the page), and for each iteration: 3.3.1.1) Use the index of the iteration to access the square in the squares array that corresponds with the current cell being iterated over in the board array
-
-// board.forEach(function(square){
-//   board[0] = square [0]
-// })
-
-// if(winner === 1){
-//   return "X wins!"
-// } else if (winner === -1) {
-//   return "O wins!"
-// } else if (winner === "T"){
-//   return "There's a tie!"
-// }
-
-// getWinner ()
+  if (board[a] + board[b] + board[c] === 3){
+    console.log("X wins!")
+    message.textContent = "X wins"
+  } else if (board[a] + board[b] + board[c] === - 3){
+    console.log("O wins!")
+    message.textContent = "O wins"
+  } 
+}
+}
