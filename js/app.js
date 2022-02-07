@@ -9,8 +9,7 @@ const winningCombos = [
   [3,4,5], 
   [6,7,8]
 ]
-const replayBtn = document.getElementById("#replay-button")
-
+const gameStat = null
 
 /*---------------------------- Variables (state) ----------------------------*/
 let board, turn, winner, playerX, playerO
@@ -18,17 +17,19 @@ let board, turn, winner, playerX, playerO
 
 /*------------------------ Cached Element References ------------------------*/
 const squares = document.querySelectorAll(".square")
-console.log(squares)
-const gameStat = null
 const message = document.getElementById("#message")
+const resetBtn = document.getElementById("#replay-button")
+const form = document.querySelector("form")
 
 /*----------------------------- Event Listeners -----------------------------*/
 squares.forEach(square => square.addEventListener("click", handleClick))
+form.addEventListener("reset", init)
 
 /*-------------------------------- Functions --------------------------------*/
 init() 
 
 function init() {
+  
   // 3.2.1) Initialize the board array to 9 nulls to represent empty squares. The 9 elements will "map" to each square. Index 0 represents the top-left square. Index 1 represents the top-middle square. So on, continuing through the entire board until Index 8 maps to the bottom-right square.
   board = [
     null, null, null, 
@@ -39,7 +40,7 @@ function init() {
   playerX = 1
   playerO = -1 
   winner = null
-  
+  form.setAttribute("hidden", true)
 }
 
 function handleClick(evt) {
@@ -64,7 +65,8 @@ board.forEach(function (square, i){
   }
   turn = turn * -1
   })
-// getWinner()
+getWinner()
+resetBtn.removeAttribute("hidden")
 }
 
 
