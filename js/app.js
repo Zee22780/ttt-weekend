@@ -12,18 +12,17 @@ const winningCombos = [
 const gameStat = null
 
 /*---------------------------- Variables (state) ----------------------------*/
-let board, turn, winner, playerX, playerO
+let board, turn, winner, playerX, playerO, counter
 
 
 /*------------------------ Cached Element References ------------------------*/
 const squares = document.querySelectorAll(".square")
-const message = document.getElementById("#message")
-const resetBtn = document.getElementById("#replay-button")
-const form = document.querySelector("form")
+const resetBtn = document.getElementById("replay-button")
+
 
 /*----------------------------- Event Listeners -----------------------------*/
 squares.forEach(square => square.addEventListener("click", handleClick))
-form.addEventListener("reset", init)
+resetBtn.addEventListener("click", init)
 
 /*-------------------------------- Functions --------------------------------*/
 init() 
@@ -40,14 +39,18 @@ function init() {
   playerX = 1
   playerO = -1 
   winner = null
-  form.setAttribute("hidden", true)
+  counter = 0
+  render()
+  resetBtn.setAttribute("hidden", true)
+  message.textContent = "Click a box to play"
 }
 
 function handleClick(evt) {
   const index = evt.target.id.replace('sq', '')
   board[index] = turn
   console.log(board)
-
+  counter += 1
+  
 render()
 getWinner()
 }
@@ -61,28 +64,32 @@ board.forEach(function (square, i){
   } else if (board[i] === -1){
     squares[i].textContent = "O"
   } else if (board[i] === null) {
-    squares[i].textContent === ""
+    squares[i].textContent = " "
   }
   turn = turn * -1
   })
 getWinner()
-resetBtn.removeAttribute("hidden")
 }
 
 
 function getWinner() {
+  if (counter === 9 && winner === null){
+    winner = "T"
+    message.textContent = "There is a tie!"
+    return 
+  } 
   for (let i = 0; i< winningCombos.length; i++){
-    console.log("hello")
     const a = winningCombos[i][0]
     const b = winningCombos[i][1]
     const c = winningCombos[i][2]
 
   if (board[a] + board[b] + board[c] === 3){
     console.log("X wins!")
-    message.textContent = "X wins"
+    message.textContent = "X wins!"
   } else if (board[a] + board[b] + board[c] === - 3){
     console.log("O wins!")
-    message.textContent = "O wins"
+    message.textContent = "O wins!"
   } 
+  resetBtn.removeAttribute("hidden")
 }
 }
